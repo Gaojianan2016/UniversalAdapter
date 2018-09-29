@@ -16,7 +16,7 @@ import java.util.List;
  * Time: 2017/9/5.
  */
 
-public abstract class BaseListAdapter<T> extends BaseAdapter {
+public abstract class BaseListAdapter<T> extends BaseAdapter implements IAdapterItem<T> {
 
     protected Context mContext;
     protected Activity mActivity;
@@ -69,7 +69,7 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public T getItem(int position) {
         return mData.get(position);
     }
 
@@ -78,15 +78,18 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
         return position;
     }
 
+    @Override
     public List<T> getData() {
         return mData;
     }
 
+    @Override
     public void setData(List<T> data) {
         clear();
         add(data);
     }
 
+    @Override
     public void add(int pos, T item) {
         if (pos > getCount()) {
             pos = getCount();
@@ -98,10 +101,12 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    @Override
     public void add(T item) {
         add(getCount(), item);
     }
 
+    @Override
     public void add(List<T> items) {
         if (items != null) {
             for (T item : items) {
@@ -110,33 +115,42 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
         }
     }
 
+    @Override
     public void addStart(T item) {
         add(0, item);
     }
 
+    @Override
     public void delete(int pos) {
         mData.remove(pos);
         notifyDataSetChanged();
     }
 
+    @Override
     public void delete(T item) {
         mData.remove(item);
         notifyDataSetChanged();
     }
 
+    @Override
     public void delete() {
         delete(getCount() - 1);
     }
 
+    @Override
     public void change(int pos, T item) {
         mData.set(pos, item);
         notifyDataSetChanged();
     }
 
+    @Override
     public void clear() {
         mData.clear();
         notifyDataSetChanged();
     }
+
+    @Override
+    public void move(int from, int to) {}
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;

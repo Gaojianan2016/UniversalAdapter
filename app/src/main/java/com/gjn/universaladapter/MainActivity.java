@@ -2,8 +2,8 @@ package com.gjn.universaladapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        BaseTypeRecyclerAdapter.TypeSupport<String> support = new BaseTypeRecyclerAdapter.TypeSupport<String>() {
+        BaseTypeRecyclerAdapter.TypeSupport<String> support = new BaseTypeRecyclerAdapter.SimpleTypeSupport<String>() {
             @Override
             public int getLayoutId(int type) {
                 if (type == 1) {
@@ -97,13 +97,6 @@ public class MainActivity extends AppCompatActivity {
         adapterWrapper = new HFAdapterWrapper(recyclerAdapter);
         recyclerView.setAdapter(adapterWrapper);
 
-        recyclerAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int pos) {
-                Toast.makeText(context, "点击列表" + (pos - adapterWrapper.getHeaderCount()), Toast.LENGTH_SHORT).show();
-            }
-        });
-
         adapterWrapper.setOnBindHFDataListener(new HFAdapterWrapper.SimpleBindHFDataListener() {
             @Override
             public void bindHeaderView(View view, Object o, final int position) {
@@ -137,6 +130,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 recyclerView.setVisibility(View.VISIBLE);
                 listView.setVisibility(View.GONE);
+
+                recyclerAdapter.addStart("新的首项");
+                adapterWrapper.setAdapter(recyclerAdapter);
             }
         });
 
@@ -145,6 +141,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 recyclerView.setVisibility(View.GONE);
                 listView.setVisibility(View.VISIBLE);
+
+                recyclerAdapter.add("新的尾项");
+                adapterWrapper.setAdapter(recyclerAdapter);
             }
         });
 

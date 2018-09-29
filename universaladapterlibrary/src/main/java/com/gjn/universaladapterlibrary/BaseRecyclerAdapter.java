@@ -15,7 +15,7 @@ import java.util.List;
  * Author: gjn.
  * Time: 2017/6/9.
  */
-public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerViewHolder> {
+public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerViewHolder> implements IAdapterItem<T> {
 
     protected List<T> mData;
     protected Context mContext;
@@ -69,19 +69,23 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         return mData.size();
     }
 
+    @Override
     public T getItem(int pos) {
         return mData.get(pos);
     }
 
+    @Override
     public List<T> getData() {
         return mData;
     }
 
+    @Override
     public void setData(List<T> list) {
         clear();
         add(list);
     }
 
+    @Override
     public void add(int pos, T item) {
         if (pos > getItemCount()) {
             pos = getItemCount();
@@ -93,10 +97,12 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         notifyItemInserted(pos);
     }
 
+    @Override
     public void add(T item) {
         add(getItemCount(), item);
     }
 
+    @Override
     public void add(List<T> items) {
         if (items != null) {
             for (T item : items) {
@@ -105,29 +111,35 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         }
     }
 
+    @Override
     public void addStart(T item) {
         add(0, item);
     }
 
+    @Override
     public void delete(int pos) {
         mData.remove(pos);
         notifyItemRemoved(pos);
     }
 
+    @Override
     public void delete(T item) {
         mData.remove(item);
         notifyDataSetChanged();
     }
 
+    @Override
     public void delete() {
         delete(getItemCount() - 1);
     }
 
+    @Override
     public void change(int pos, T item) {
         mData.set(pos, item);
         notifyItemChanged(pos, item);
     }
 
+    @Override
     public void move(int from, int to) {
         T temp = mData.get(from);
 
@@ -137,6 +149,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         notifyItemMoved(from, to);
     }
 
+    @Override
     public void clear() {
         mData = new ArrayList<T>();
         notifyDataSetChanged();

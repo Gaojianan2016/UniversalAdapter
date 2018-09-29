@@ -6,13 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 /**
  * HFAdapterWrapper
  * Author: gjn.
  * Time: 2017/9/4.
  */
 
-public class HFAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class HFAdapterWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_HEADER = 0x10001;
     private static final int TYPE_FOOTER = 0x20001;
@@ -25,6 +27,11 @@ public class HFAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public HFAdapterWrapper(RecyclerView.Adapter adapter) {
         mInnerAdapter = adapter;
+    }
+
+    public void setAdapter(RecyclerView.Adapter adapter){
+        mInnerAdapter = adapter;
+        notifyDataSetChanged();
     }
 
     public boolean isHeader(int pos) {
@@ -68,28 +75,6 @@ public class HFAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHold
         info.view = v;
         info.data = data;
         mFooterViews.put(mFooterViews.size() + TYPE_FOOTER, info);
-        notifyDataSetChanged();
-    }
-
-    public void removeHeaderView(View v) {
-        if (hasHeaderView()) {
-            for (int i = 0; i < mHeaderViews.size(); i++) {
-                if (mHeaderViews.get(i).view == v) {
-                    mHeaderViews.remove(i);
-                }
-            }
-        }
-        notifyDataSetChanged();
-    }
-
-    public void removeFooterView(View v) {
-        if (hasFooterView()) {
-            for (int i = 0; i < mFooterViews.size(); i++) {
-                if (mFooterViews.get(i).view == v) {
-                    mFooterViews.remove(i);
-                }
-            }
-        }
         notifyDataSetChanged();
     }
 
@@ -161,14 +146,16 @@ public class HFAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHold
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onHFClickListener.headerItemClick(v, mHeaderViews.get(type).data, position);
+                        onHFClickListener.headerItemClick(v, mHeaderViews.get(type).data,
+                                position);
                     }
                 });
 
                 view.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        return onHFClickListener.headerItemLongClick(v, mHeaderViews.get(type).data, position);
+                        return onHFClickListener.headerItemLongClick(v, mHeaderViews.get(type).data,
+                                position);
                     }
                 });
             }
@@ -178,13 +165,15 @@ public class HFAdapterWrapper extends RecyclerView.Adapter<RecyclerView.ViewHold
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onHFClickListener.footerItemClick(v, mFooterViews.get(type).data, position - getHeaderCount() - getRealItemCount());
+                        onHFClickListener.footerItemClick(v, mFooterViews.get(type).data,
+                                position - getHeaderCount() - getRealItemCount());
                     }
                 });
                 view.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        return onHFClickListener.footerItemLongClick(v, mFooterViews.get(type).data, position - getHeaderCount() - getRealItemCount());
+                        return onHFClickListener.footerItemLongClick(v, mFooterViews.get(type).data,
+                                position - getHeaderCount() - getRealItemCount());
                     }
                 });
             }

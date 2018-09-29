@@ -2,6 +2,7 @@ package com.gjn.universaladapterlibrary;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
@@ -34,12 +35,27 @@ public abstract class BaseTypeRecyclerAdapter<T> extends BaseRecyclerAdapter<T> 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int layoutId = mTypeSupport.getLayoutId(viewType);
-        RecyclerViewHolder holder = RecyclerViewHolder.getHolder(mContext,parent,layoutId);
+        View view = mTypeSupport.getLayoutView(viewType);
+        RecyclerViewHolder holder = null;
+        if (layoutId != 0) {
+            holder = RecyclerViewHolder.getHolder(mContext, parent, layoutId);
+        }
+        if (view != null) {
+            holder = RecyclerViewHolder.getHolder(view);
+        }
         addItemClick(holder);
         return holder;
     }
 
+    public abstract static class SimpleTypeSupport<T> implements TypeSupport<T>{
+        @Override
+        public View getLayoutView(int type) {
+            return null;
+        }
+    }
+
     public interface TypeSupport<T>{
+        View getLayoutView(int type);
         int getLayoutId(int type);
         int getType(int position, T t);
     }

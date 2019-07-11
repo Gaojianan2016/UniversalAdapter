@@ -46,7 +46,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         return findViewById(id);
     }
 
-    public RecyclerViewHolder setTextViewText(int id, String txt) {
+    public RecyclerViewHolder setTextViewText(int id, CharSequence txt) {
         getTextView(id).setText(txt);
         return this;
     }

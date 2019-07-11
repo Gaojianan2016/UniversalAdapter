@@ -47,7 +47,7 @@ public class ListViewHolder {
         return mConvertView;
     }
 
-    public ListViewHolder setTextViewText(int id, String str) {
+    public ListViewHolder setTextViewText(int id, CharSequence str) {
         getTextView(id).setText(str);
         return this;
     }

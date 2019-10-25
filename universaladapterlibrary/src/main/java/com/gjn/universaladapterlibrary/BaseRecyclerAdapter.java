@@ -120,7 +120,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
     @Override
     public void delete(int pos) {
         mData.remove(pos);
-        notifyItemRemoved(pos);
+        notifyDataSetChanged();
     }
 
     @Override
